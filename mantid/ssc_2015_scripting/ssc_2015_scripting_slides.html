@@ -7,7 +7,7 @@
     <title>Scripting With Mantid</title>
 
     <link rel="stylesheet" href="dist/css/reveal.css">
-    <link rel="stylesheet" href="dist/css/theme/simple.css" id="theme">	
+    <link rel="stylesheet" href="dist/css/theme/night.css" id="theme">
     <!--Add support for earlier versions of Internet Explorer -->
     <!--[if lt IE 9]>
 	<script src="lib/js/html5shiv.js"></script>
@@ -22,6 +22,8 @@
             font-family: 'Yanone Kaffeesatz';
             font-weight: normal;
         }
+        .reveal h3 { margin: 5px; }
+        .reveal .slides > section { padding: 5px 0px; }
     </style>
 
   </head>
@@ -51,21 +53,23 @@
      	  <h3>Integration with IPython Notebook</h3>
     	  <img src="static/img/IPythonNotebookBottom.png"/>
 	</section>
-       
+
       </div>
     </div>
 
     <script src="dist/lib/js/head.min.js"></script>
     <script src="dist/js/reveal.js"></script>
-    
+
     <script>
       // Required, even if empty.
       Reveal.initialize({
       });
-      Reveal.configure( { 
+      Reveal.configure( {
          autoSlide: 10000,
-         loop: true
-      } ); // on
+         loop: true,
+         width: '90%',
+         height: '100%'
+      } );
     </script>
   </body>
 </html>
