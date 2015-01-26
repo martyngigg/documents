@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scripting With Mantid</title>
+
+    <link rel="stylesheet" href="dist/css/reveal.css">
+    <link rel="stylesheet" href="dist/css/theme/simple.css" id="theme">	
+    <!--Add support for earlier versions of Internet Explorer -->
+    <!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+	@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic); -->
+
+        body { font-family: 'Droid Serif'; }
+        h1, h2, h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+        }
+        h3 { font-size: 36px; }
+        <!--img.section { width: 50%; }-->
+    </style>
+
+  </head>
+
+  <body>
+
+    <!-- Wrap the entire slide show in a div using the "reveal" class. -->
+    <div class="reveal">
+      <!-- Wrap all slides in a single "slides" class -->
+      <div class="slides">
+	<section>
+     	  <h3>MantidPlot with IPython Shell</h3>
+     	  <img src="static/img/IPython.png"/>
+	</section>
+
+	<section>
+     	  <h3>MantidPlot Script File Editor/Runner</h3>
+    	  <img src="static/img/ScriptingWindow.png"/>
+	</section>
+
+	<section>
+     	  <h3>Console Running without MantidPlot</h3>
+    	  <img src="static/img/Console.png"/>
+	</section>
+
+	<section>
+     	  <h3>Integration with IPython Notebook</h3>
+    	  <img src="static/img/IPythonNotebookBottom.png"/>
+	</section>
+       
+      </div>
+    </div>
+
+    <script src="dist/lib/js/head.min.js"></script>
+    <script src="dist/js/reveal.js"></script>
+    
+    <script>
+      // Required, even if empty.
+      Reveal.initialize({
+      });
+      Reveal.configure( { 
+         autoSlide: 10000,
+         loop: true
+      } ); // on
+    </script>
+  </body>
+</html>
