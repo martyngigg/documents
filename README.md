@@ -1,2 +1,2 @@
-# presentations
-Place to store public presentations
+# documents
+Place to store presentations etc
