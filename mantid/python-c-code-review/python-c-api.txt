@@ -1,0 +1,188 @@
+class: center, middle
+
+# Python C/C++ Extensions
+
+### Martyn Gigg
+### 12th February 2016
+
+---
+
+# Goal
+
+A brief overview of wrapping C/C++ code so that it is callable as a Python
+module.
+
+---
+
+# Introduction
+
+- Many implementations of the Python language exist: `CPython` (C), `IronPython` (.NET), `Jython` (Java)
+
+- We focus on the more widely used CPython.
+
+---
+
+# CPython
+
+- Generally Python has become synonymous with CPython
+
+- Learning to write python doesn't feel like you have anything to do with C/C++
+
+- We can write whole programs decomposed in to modules of pure Python code and be happy
+
+---
+
+# Need for Speed
+
+* Python is an interpreted langage designed for generality & usability
+
+* No built-in array type
+
+* `list` is a linked list of generic objects that provides flexibility at the cost of performance
+
+* Looping can be slow
+
+---
+
+# Best of Both Worlds - Extending Python with C or C++
+
+- We would like the best of both by writing Python-style syntax but when required gain the performance of `C` code: Extension modules!
+
+
+- Python.org has a great tutorial that I don't intend to reproduce. Let's review parts of it briefly
+[https://docs.python.org/2/extending/extending.html](https://docs.python.org/2/extending/extending.html)
+
+Comments:
+
+ - While not too complicated, hand writing the wrapping for many functions/classes would get very tedious!
+
+---
+# Tools
+
+- Much of the code for an extension module is boiler plate
+- In most circumstances use a tool to do the wrapping:
+- There are a few well established players:
+  - `Boost Python`
+  - `SIP` (used for wrapping C++ Qt to PyQt)
+  - `SWIG`
+- Other newer tools:
+  - `pybind11`(rewrite of `Boost Python` using C++11)
+  - `shiboken` (used for PySide, an alternative to PyQt)
+
+---
+# Boost Python
+
+- Let's try the same example as the Python.org tutorial:
+
+```c++
+#include <boost/python/def.hpp>
+
+using boost::python::def;
+
+namespace {
+void wrapped_system(const char *command) {
+  return system(command);
+}
+}
+
+BOOST_PYTHON_MODULE(spam) {
+  def("spam", wrapped_system,
+      "Pass a command string to the system command");
+}
+
+```
+
+- Simply compile it to a file called `spam.so` (Linux/OSX) or `spam.pyd` (Windows) and you're good to go!
+
+---
+
+# Boost Python - Classes
+
+```c++
+#include <boost/python/class.hpp>
+using boost::python::class_;
+using boost::python::init;
+
+namespace {
+  class Point2D {
+  public:
+    Point2D(double x, double y) : m_x(x), m_y(y) {}
+    inline double x() const { return m_x; }
+    inline double y() const { return m_y; }
+    inline double norm2() const { return m_x*m_x + m_y*m_y; }
+  private:
+    double m_x, m_y;
+  };
+}
+
+BOOST_PYTHON_MODULE(spam) {
+  class_<Point2D>(init<double,double>("Class representing a 2D point"))
+    .add_property("x", &Point2D::x)
+    .add_property("y", &Point2D::y)
+    .def("norm2", &Point2D::norm2,
+         "Return the squared-norm of the point")
+  ;
+}
+```
+
+---
+
+# Boost Python: Comments
+
+- Exports are all done via standard C++ syntax
+  - no new meta-language
+  - no parse step
+
+- Simple to write "proxy" functions between the Python layer & existing C++ codebase
+
+- Allows inheriting of Python classes from ones defined in C++
+
+---
+
+## SIP
+
+- Built primarily to support exporting the Qt classes to Python in `PyQt`
+
+- Uses a `.sip` file to defined the modules and a syntax that closely resembles
+C++ to export new types/methods
+  - The file is processed by a `sip` program to automatically produce the `C` boiler-plate code required to expose the module
+
+- It understands Qt signals/slots out of the box
+
+---
+
+## Class export
+
+- Definition of `spam` module is in `spam.sip` (assume same definition of `Point2D` as before)
+
+```cpp
+// filename: spam.sip
+%Module spam
+class Point2D {
+%TypeHeaderCode
+#include "Point2D.h"
+%End
+public:
+  Point2D(double x, double y);
+  double norm2() const;
+  double x
+  {
+    %GetCode
+    sipPy = PyFloat_FromDouble(sipCpp->x());
+    %End
+    %SetCode
+    sipErr = 1; // + other exception stuff...
+    %End
+  };
+};
+```
+
+---
+
+## SIP
+
+- Generate the C++ wrapping code with:
+
+```remark
+sip -c . spam.sip
+```
