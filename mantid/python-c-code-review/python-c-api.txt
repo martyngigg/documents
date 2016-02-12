@@ -186,3 +186,28 @@ public:
 ```remark
 sip -c . spam.sip
 ```
+
+- Compile the generated code again to a shared `spam` library and we again have a Python module
+
+Comments:
+
+- Still a much lower barrier to wrapping than handwritten extension code
+
+- Signals/slots knowledge means the goto wrapper for Qt-related code
+
+- Seems to cope with the same cases that Boost Python can although the documentation lacks examples
+
+---
+
+# Final remarks
+
+- Key message: Always use a wrapping tool
+
+- Don't just export C++ api as is. Try and make it feel like a Python-module, e.g.
+  - use Python sequence types and not C/C++ ones
+  - use properties rather than getter methods
+  - add docstrings to classes and methods!
+
+- References:
+ - boostpy: http://www.boost.org/doc/libs/1_58_0/libs/python/doc/
+ - sip: http://pyqt.sourceforge.net/Docs/sip4/
