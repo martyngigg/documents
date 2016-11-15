@@ -1,0 +1,14 @@
+class: center, middle
+
+# Demystifying Git
+
+### Martyn Gigg
+### 18th November 2016
+
+---
+
+# Goal
+
+Dive into some Git under the hood.
+
+---
